@@ -1,0 +1,73 @@
+#include<stdio.h>
+int main()
+{
+    int i,j,k,n=3;
+    float factor;
+    float matriz[3][3]={{1,2,3},{-2,-4,8},{3,1,2}};
+    float b[3]={2.4,6.4,7.6};
+    float x[3],swap1[3][3],swap2[3],sum=0;
+    printf("Metodo Gauss-Jordan\n");
+    printf("Sistema de Ecuaciones Lineales\n");
+    /*Impresion de Sistema de Ecuaciones*/
+    printf("\nSistema Original>\n");
+    for(i=0;i<n;i++)
+    {
+        for (j=0;j<n;j++)
+        {
+            printf("%fx%i  ",matriz[i][j],j+1);
+        }
+        printf("= %f \n",b[i]);
+    }
+    /*Comienza Eliminación Gaussiana*/
+    for(i=0;i<n;i++)
+    {
+        if(matriz[i][i]==0)
+        {
+            for(j=0;j<n;j++)
+            {
+                swap1[i][j]=matriz[i][j];
+                matriz[i][j]=matriz[i+1][j];
+                matriz[i+1][j]=swap1[i][j];
+            }
+            swap2[i]=b[i];
+            b[i]=b[i+1];
+            b[i+1]=swap2[i];
+        }
+        for(j=i+1;j<n;j++)
+        {
+            factor=matriz[j][i]/matriz[i][i];
+            for(k=i;k<n;k++)
+            {
+                matriz[j][k]=matriz[j][k]-factor*matriz[i][k];
+            }
+            b[j]=b[j]-factor*b[i];
+        }
+    }
+    /*Impresion de Resultados*/
+    printf("\nEliminacion Gaussiana>\n");
+    for(i=0;i<n;i++)
+    {
+        for (j=0;j<n;j++)
+        {
+            printf("%fx%i  ",matriz[i][j],j+1);
+        }
+        printf("= %f \n",b[i]);
+    }
+    /*Comienza Gauss-Jordan*/
+    x[n-1]=b[n-1]/matriz[n-1][n-1];
+    for(i=n-2;i>=0;i--)
+    {
+        sum=b[i];
+        for(j=i+1;j<n;j++)
+        {
+            sum=sum-(matriz[i][j]*x[j]);
+        }
+        x[i]=sum/matriz[i][i];
+    }
+    /*Impresion de Resultados*/
+    printf("\nSolucion Gauss-Jordan>\n");
+    for(i=0;i<n;i++)
+    {
+        printf("x%d = %f \n",i+1,x[i]);
+    }
+}
